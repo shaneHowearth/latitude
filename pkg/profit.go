@@ -1,5 +1,18 @@
 package latitude
 
+// LocalProfit - max profit available in the given slice
+func LocalProfit(vals []int) (min, max, profit int) {
+	max = FindMax(vals)
+	if max != -1 {
+		min = FindMin(vals[0:max])
+	}
+	if max == -1 || min == -1 {
+		return -1, -1, 0
+	}
+	profit = vals[max] - vals[min]
+	return min, max, profit
+}
+
 // FindMax - Find highest value in provided slice, return the index
 func FindMax(vals []int) int {
 	if len(vals) < 1 {
