@@ -17,8 +17,8 @@ func main() {
 	// allow comma separated or space separated input
 	inputRegExp, _ := regexp.Compile(",| ")
 	strVals := inputRegExp.Split(strings.Join(input, ","), -1)
-	if len(strVals) >= 1 {
-		fmt.Println("No input supplied")
+	if len(strVals) <= 1 {
+		fmt.Println("No input detected")
 		os.Exit(1)
 	}
 

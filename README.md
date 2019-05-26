@@ -2,9 +2,11 @@
 Small Profit searcher
 
 # Install
-Clone this repository with `git clone` or `go get -u`
+Clone this repository with `git clone`
 
-`make` will build the application assuming you have all the dependencies.
+`make` will build the application, create a docker container, and stand that container up.
+
+You can access the container with `docker exec -it shane sh`
 
 # Usage
 The built application will accept a space or comma sparated list of numbers and will produce appropriate output.
