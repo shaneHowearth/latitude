@@ -2,7 +2,7 @@
 Small Profit searcher
 
 # Install
-`make` will bu
+`make` will build the application assuming you have all the dependencies (This is WIP)
 
 # Usage
 The built application will accept a space or comma sparated list of numbers and will produce appropriate output.
