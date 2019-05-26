@@ -4,50 +4,60 @@ package latitude
 const OFFSET = 1
 
 // GetMaxProfit -
-func GetMaxProfit(vals []int) (min, max, profit int) {
-	min, max, profit = GetLocalProfit(vals)
-	if min == -1 || max == -1 {
+func GetMaxProfit(vals []int) (minIdx, maxIdx, profit int) {
+	if len(vals) < 2 {
 		return -1, -1, 0
 	}
-	for i := max + OFFSET; i < len(vals)-1; {
-		localMin, localMax, localProfit := GetLocalProfit(vals[i:])
+	minIdx, maxIdx, profit = GetLocalProfit(0, 0, vals)
+	if minIdx == -1 || maxIdx == -1 {
+		return -1, -1, 0
+	}
+	for idx := maxIdx + OFFSET; idx < len(vals)-1; {
+		localMinIdx, localMaxIdx, localProfit := GetLocalProfit(idx, minIdx, vals)
 		if localProfit > profit {
-			min, max, profit = max+localMin+OFFSET, max+localMax+OFFSET, localProfit
+			minIdx, maxIdx, profit = localMinIdx, localMaxIdx, localProfit
 		}
-		if localMax == -1 {
+		if localMaxIdx == -1 {
 			break
 		}
 		// Update i here because we want to stop this loop
 		// at the correct index in the vals slice.
 		// But it is not a uniform increment.
-		i += localMax
+		idx += localMaxIdx + OFFSET
 	}
-	return min, max, profit
+	return minIdx, maxIdx, profit
 }
 
 // GetLocalProfit - max profit available in the given slice
-func GetLocalProfit(vals []int) (min, max, profit int) {
-	max = FindMax(vals)
-	if max != -1 {
-		min = FindMin(vals[0:max])
-	}
-	if max == -1 || min == -1 {
+func GetLocalProfit(idx, currentMinIdx int, vals []int) (minIdx, maxIdx, profit int) {
+	if len(vals) < 2 {
+
 		return -1, -1, 0
 	}
-	profit = vals[max] - vals[min]
-	return min, max, profit
+	maxIdx = FindMax(vals[idx+OFFSET:])
+	if maxIdx != -1 {
+		minIdx = FindMin(vals[:maxIdx+idx+OFFSET])
+	}
+	if maxIdx == -1 || minIdx == -1 {
+		return -1, -1, 0
+	}
+	if vals[currentMinIdx] < vals[minIdx] {
+		minIdx = currentMinIdx
+	}
+	profit = vals[maxIdx+idx+OFFSET] - vals[minIdx]
+	return minIdx, maxIdx + idx + OFFSET, profit
 }
 
 // FindMax - Find highest value in provided slice, return the index
 func FindMax(vals []int) int {
-	if len(vals) < 1 {
+	if len(vals) < 2 {
 		return -1
 	}
 	idx := 0
-	max := vals[0]
+	maxVal := vals[0]
 	for i := range vals {
-		if vals[i] > max {
-			max = vals[i]
+		if vals[i] > maxVal {
+			maxVal = vals[i]
 			idx = i
 		}
 	}
@@ -60,10 +70,10 @@ func FindMin(vals []int) int {
 		return -1
 	}
 	idx := 0
-	min := vals[0]
+	minVal := vals[0]
 	for i := range vals {
-		if vals[i] < min {
-			min = vals[i]
+		if vals[i] < minVal {
+			minVal = vals[i]
 			idx = i
 		}
 	}

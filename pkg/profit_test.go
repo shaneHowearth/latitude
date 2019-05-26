@@ -22,15 +22,21 @@ func TestGetMaxProfit(t *testing.T) {
 		},
 		"No result": {
 			inputVals: []int{9, 2, 3, 4, 5},
-			min:       -1,
-			max:       -1,
-			profit:    0,
+			min:       1,
+			max:       4,
+			profit:    3,
 		},
 		"First Max": {
 			inputVals: []int{4, 5, 3, 4, 5},
 			min:       2,
 			max:       4,
 			profit:    2,
+		},
+		"Multi max check": {
+			inputVals: []int{4, 7, 3, 4, 6, 1, 2, 4, 3, 1, 5, 4},
+			min:       5,
+			max:       10,
+			profit:    4,
 		},
 		"Long Input": {
 			inputVals: []int{54, 40, 47, 88, 37, 81, 32, 67, 56, 93,
@@ -43,9 +49,9 @@ func TestGetMaxProfit(t *testing.T) {
 				37, 53, 96, 49, 95, 1, 94, 60, 94, 66, 89,
 				4, 27, 70, 25, 53, 14, 83, 14, 85, 26,
 				25, 92, 22, 56, 47, 38, 73, 95, 71, 49},
-			min:    69,
-			max:    72,
-			profit: 93,
+			min:    75,
+			max:    98,
+			profit: 94,
 		},
 		"Min further inside": {
 			inputVals: []int{5, 2, 3, 4, 9, 3},
@@ -85,7 +91,7 @@ func TestGetLocalProfit(t *testing.T) {
 			profit:    4,
 		},
 		"No result": {
-			inputVals: []int{9, 2, 3, 4, 5},
+			inputVals: []int{9, 9},
 			min:       -1,
 			max:       -1,
 			profit:    0,
@@ -104,6 +110,12 @@ func TestGetLocalProfit(t *testing.T) {
 			max:       4,
 			profit:    7,
 		},
+		"Single entry list": {
+			inputVals: []int{5},
+			min:       -1,
+			max:       -1,
+			profit:    0,
+		},
 		"Empty list": {
 			inputVals: []int{},
 			min:       -1,
@@ -113,7 +125,7 @@ func TestGetLocalProfit(t *testing.T) {
 	}
 
 	for name, tc := range testcases {
-		minOut, maxOut, profitOut := latitude.GetLocalProfit(tc.inputVals)
+		minOut, maxOut, profitOut := latitude.GetLocalProfit(0, 0, tc.inputVals)
 		assert.Equal(t, tc.min, minOut, "Output produced incorrect min index for %s", name)
 		assert.Equal(t, tc.max, maxOut, "Output produced incorrect max index for %s", name)
 		assert.Equal(t, tc.profit, profitOut, "Output produced incorrect profit for %s", name)
