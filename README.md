@@ -1,0 +1,2 @@
+# latitude
+Small Profit searcher
