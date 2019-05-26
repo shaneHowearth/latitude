@@ -1,7 +1,7 @@
 package latitude_test
 
 import (
-	latitude "latitude/pkg"
+	latitude "github.com/shanehowearth/latitude/pkg"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

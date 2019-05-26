@@ -14,12 +14,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/shanehowearth/latitude"
-  packages = ["pkg"]
-  revision = "300a6846d4c0afef5a814de3b5243fa4bb4f7dcc"
-
-[[projects]]
   name = "github.com/stretchr/testify"
   packages = ["assert"]
   revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
@@ -28,6 +22,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "14d53c70de3563977748408bee097724fade31436793f079488ca0d5f8f8a0bd"
+  inputs-digest = "ad9c910358b6a68f395ffa4622e62fe15d429ed154121e040a85d3c05cb12df0"
   solver-name = "gps-cdcl"
   solver-version = 1
