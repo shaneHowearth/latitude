@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"regexp"
 	"strconv"
@@ -18,13 +17,18 @@ func main() {
 	// allow comma separated or space separated input
 	inputRegExp, _ := regexp.Compile(",| ")
 	strVals := inputRegExp.Split(strings.Join(input, ","), -1)
+	if len(strVals) >= 1 {
+		fmt.Println("No input supplied")
+		os.Exit(1)
+	}
 
 	// Convert the input to ints
 	vals := make([]int, len(strVals))
 	for i := range vals {
 		tmp, err := strconv.Atoi(strVals[i])
 		if err != nil {
-			log.Fatalf("Your input contained a non number")
+			fmt.Println("Your input contained a non number")
+			os.Exit(1)
 		}
 		vals[i] = tmp
 	}
@@ -33,7 +37,8 @@ func main() {
 	fmt.Printf("Calculating for: %v\n", vals)
 	minIdx, maxIdx, profit, err := latitude.GetMaxProfit(vals)
 	if err != nil {
-		log.Fatalf("Unable to process request with error: %v", err)
+		fmt.Printf("Unable to process request with error: %v\n", err)
+		os.Exit(1)
 	}
 	fmt.Println("Buy at: ", vals[minIdx])
 	fmt.Println("Sell at: ", vals[maxIdx])
