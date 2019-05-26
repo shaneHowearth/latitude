@@ -3,6 +3,7 @@ Small Profit searcher
 
 # Install
 Clone this repository with `git clone` or `go get -u`
+
 `make` will build the application assuming you have all the dependencies.
 
 # Usage
