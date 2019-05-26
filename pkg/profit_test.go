@@ -13,6 +13,8 @@ func TestGetMaxProfit(t *testing.T) {
 		min       int
 		max       int
 		profit    int
+		err       bool
+		message   string
 	}{
 		"Happy Path": {
 			inputVals: []int{1, 2, 3, 4, 5},
@@ -64,14 +66,19 @@ func TestGetMaxProfit(t *testing.T) {
 			min:       -1,
 			max:       -1,
 			profit:    0,
+			err:       true,
+			message:   "not enough values to determine a profit",
 		},
 	}
 
 	for name, tc := range testcases {
-		minOut, maxOut, profitOut := latitude.GetMaxProfit(tc.inputVals)
-		assert.Equal(t, tc.min, minOut, "Output produced incorrect min index for %s", name)
-		assert.Equal(t, tc.max, maxOut, "Output produced incorrect max index for %s", name)
-		assert.Equal(t, tc.profit, profitOut, "Output produced incorrect profit for %s", name)
+		minOut, maxOut, profitOut, err := latitude.GetMaxProfit(tc.inputVals)
+		if tc.err {
+			assert.EqualErrorf(t, err, tc.message, "GetMaxProfit produced incorrect error for %s", name)
+		}
+		assert.Equal(t, tc.min, minOut, "GetMaxProfit produced incorrect min index for %s", name)
+		assert.Equal(t, tc.max, maxOut, "GetMaxProfit produced incorrect max index for %s", name)
+		assert.Equal(t, tc.profit, profitOut, "GetMaxProfit produced incorrect profit for %s", name)
 	}
 
 }
@@ -82,7 +89,8 @@ func TestGetLocalProfit(t *testing.T) {
 		min       int
 		max       int
 		profit    int
-		err       error
+		err       bool
+		message   string
 	}{
 		"Happy Path": {
 			inputVals: []int{1, 2, 3, 4, 5},
@@ -121,14 +129,19 @@ func TestGetLocalProfit(t *testing.T) {
 			min:       -1,
 			max:       -1,
 			profit:    0,
+			err:       true,
+			message:   "not enough values supplied to find the local profit",
 		},
 	}
 
 	for name, tc := range testcases {
-		minOut, maxOut, profitOut := latitude.GetLocalProfit(0, 0, tc.inputVals)
-		assert.Equal(t, tc.min, minOut, "Output produced incorrect min index for %s", name)
-		assert.Equal(t, tc.max, maxOut, "Output produced incorrect max index for %s", name)
-		assert.Equal(t, tc.profit, profitOut, "Output produced incorrect profit for %s", name)
+		minOut, maxOut, profitOut, err := latitude.GetLocalProfit(0, 0, tc.inputVals)
+		if tc.err {
+			assert.EqualErrorf(t, err, tc.message, "GetLocalProfit produced incorrect error for %s", name)
+		}
+		assert.Equal(t, tc.min, minOut, "GetLocalProfit produced incorrect min index for %s", name)
+		assert.Equal(t, tc.max, maxOut, "GetLocalProfit produced incorrect max index for %s", name)
+		assert.Equal(t, tc.profit, profitOut, "GetLocalProfit produced incorrect profit for %s", name)
 	}
 }
 
@@ -136,6 +149,8 @@ func TestFindMax(t *testing.T) {
 	testcases := map[string]struct {
 		inputVals []int
 		output    int
+		err       bool
+		message   string
 	}{
 		"Single Max": {
 			inputVals: []int{1, 9},
@@ -149,6 +164,10 @@ func TestFindMax(t *testing.T) {
 			inputVals: []int{10, 9, 9},
 			output:    0,
 		},
+		"All Max": {
+			inputVals: []int{9, 9, 9, 9},
+			output:    0,
+		},
 		"Negative Max Val": {
 			inputVals: []int{-10, -9, -9},
 			output:    1,
@@ -156,12 +175,17 @@ func TestFindMax(t *testing.T) {
 		"Empty Slice": {
 			inputVals: []int{},
 			output:    -1,
+			err:       true,
+			message:   "not enough values supplied to find the max",
 		},
 	}
 
 	for name, tc := range testcases {
-		out := latitude.FindMax(tc.inputVals)
-		assert.Equal(t, tc.output, out, "Output produced incorrect val for %s", name)
+		out, err := latitude.FindMax(tc.inputVals)
+		if tc.err {
+			assert.EqualErrorf(t, err, tc.message, "FindMax produced incorrect error for %s", name)
+		}
+		assert.Equal(t, tc.output, out, "FindMax produced incorrect val for %s", name)
 	}
 }
 
@@ -169,6 +193,8 @@ func TestFindMin(t *testing.T) {
 	testcases := map[string]struct {
 		inputVals []int
 		output    int
+		err       bool
+		message   string
 	}{
 		"Single Min": {
 			inputVals: []int{1, 9},
@@ -189,11 +215,16 @@ func TestFindMin(t *testing.T) {
 		"Empty Slice": {
 			inputVals: []int{},
 			output:    -1,
+			err:       true,
+			message:   "no values supplied to find the min",
 		},
 	}
 
 	for name, tc := range testcases {
-		out := latitude.FindMin(tc.inputVals)
+		out, err := latitude.FindMin(tc.inputVals)
+		if tc.err {
+			assert.EqualErrorf(t, err, tc.message, "FindMax produced incorrect error for %s", name)
+		}
 		assert.Equal(t, tc.output, out, "Output produced incorrect val for %s", name)
 	}
 }
